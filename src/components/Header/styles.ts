@@ -10,10 +10,16 @@ export const StyledHeader = styled.header`
 export const BalanceContainer = styled.header`
   display: flex;
   gap: 10px;
-  align-items: center
+  align-items: center;
 `;
 
 export const Span = styled.span`
   color: blue;
+`;
 
+export const Link = styled.a`
+  color: blue;
+  font-size: 22px;
+  font-weight: 600;
+  font-family: 'Roboto Mono', sans-serif;
 `;

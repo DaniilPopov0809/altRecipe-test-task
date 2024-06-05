@@ -12,7 +12,7 @@ export const Form = () => {
 
   return (
     <StyledForm>
-      <Title>Exchanger sepolia</Title>
+      <Title>Sepolia exchanger</Title>
       <Input
         type='number'
         value={value}

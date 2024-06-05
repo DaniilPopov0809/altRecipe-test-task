@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const commonStyles = css`
+  font-family: 'Roboto Mono', sans-serif;
   border: 2px solid blue;
   background-color: white;
   color: blue;
