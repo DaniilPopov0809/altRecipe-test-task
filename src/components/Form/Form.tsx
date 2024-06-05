@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { useWrap } from '../../blockChain/hooks/useWrap';
-import { useUnWrap } from '../../blockChain/hooks/useUnWrap';
+import {useWrite } from '../../blockChain/hooks/useWrite';
 import { useAppContext } from '../../app/AppProvider/AppProvider';
+import { TransactionType } from '../../app/types';
 import { Button, ButtonContainer, Input, StyledForm, Title } from './styles';
 
 export const Form = () => {
   const [value, setValue] = useState('');
-  const { wrap, isLoading: isLoadingWrap } = useWrap(setValue);
-  const { unWrap, isLoading: isLoadingUnWrap } = useUnWrap(setValue);
+  const { write: wrap, isLoading: isLoadingWrap } = useWrite(setValue, TransactionType.WRAP);
+  const { write: unWrap, isLoading: isLoadingUnWrap } = useWrite(setValue, TransactionType.UNWRAP);
   const { balance, wrapBalance } = useAppContext();
 
   return (

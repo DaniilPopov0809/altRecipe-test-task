@@ -5,8 +5,10 @@ import { toast } from 'react-toastify';
 import { useAppContext } from '../../app/AppProvider/AppProvider';
 import ABI from '../abi.json';
 import { TOKEN_WRAP_ADDRESS } from '../constant';
+import { TransactionType } from '../../app/types';
 
-export const useUnWrap = (setValue: Dispatch<SetStateAction<string>>) => {
+
+export const useWrite = (setValue: Dispatch<SetStateAction<string>>, transactionType: TransactionType) => {
   const { isConnected } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
   const { getBalance } = useAppContext();
@@ -14,7 +16,7 @@ export const useUnWrap = (setValue: Dispatch<SetStateAction<string>>) => {
   const [isSuccess, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const unWrap = async (amount: string, balance: string) => {
+  const write = async (amount: string, balance: string) => {
     try {
       if (!isConnected) throw Error('User disconnected');
       if (!walletProvider) throw Error('Provider not found');
@@ -28,10 +30,18 @@ export const useUnWrap = (setValue: Dispatch<SetStateAction<string>>) => {
 
       const WSEPContract = new Contract(TOKEN_WRAP_ADDRESS, ABI, signer);
       setIsLoading(true);
-      setError('');
       setSuccess(false);
+      setError('');
       const formattedAmount = parseUnits(amount, 18);
-      const transaction = await WSEPContract.withdraw(formattedAmount);
+      let transaction;
+
+      if (transactionType === TransactionType.WRAP) {
+        transaction = await WSEPContract.deposit({ value: formattedAmount });
+      } 
+      if (transactionType === TransactionType.UNWRAP) {
+        transaction = await WSEPContract.withdraw(formattedAmount);
+      }
+      // const transaction = await WSEPContract.deposit({ value: formattedAmount });
       await transaction.wait();
       setIsLoading(false);
       setSuccess(true);
@@ -61,5 +71,5 @@ export const useUnWrap = (setValue: Dispatch<SetStateAction<string>>) => {
     }
   }, [error, isSuccess]);
 
-  return { unWrap, isLoading, error, isSuccess };
+  return { write, isLoading, error, isSuccess };
 };
