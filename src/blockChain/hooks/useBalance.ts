@@ -26,7 +26,7 @@ export const useBalance = (
       const signer = await ethersProvider.getSigner();
       const balance = await ethersProvider.getBalance(address as AddressLike);
 
-      setBalance(formatUnits(balance, 18))
+      setBalance(formatUnits(balance, 18));
       const WSEPContract = new Contract(TOKEN_WRAP_ADDRESS, ABI, signer);
       const WSEPBalance = await WSEPContract.balanceOf(address);
 
